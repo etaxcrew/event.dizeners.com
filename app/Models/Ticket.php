@@ -9,9 +9,11 @@ class Ticket extends Model
     //
     protected $fillable = [
         'event_id',
+        'organizer_id',
         'name',
         'about',
         'stock',
+        'remaining',
         'price',
         'start_sale',
         'end_sale',
@@ -22,6 +24,11 @@ class Ticket extends Model
     public function event()
     {
         return $this->belongsTo(Event::class);
+    }
+
+    public function organizer()
+    {
+        return $this->belongsTo(Organizer::class);
     }
 
     public function orderItems()

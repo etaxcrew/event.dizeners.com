@@ -11,13 +11,12 @@ use Filament\Resources\Resource;
 use Filament\Facades\Filament; // Tambahkan untuk akses ke Filament
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Forms\Components\BelongsToSelect; // Tambahkan
 use Filament\Tables\Actions\Action; // Tambahkan untuk aksi
 use Filament\Forms\Components\Group; // Tambahan untuk mengelompokkan komponen
 use Filament\Forms\Components\Select; // Tambahkan untuk dropdown
 use Filament\Forms\Components\Placeholder; // Tambahan untuk placeholder
 use Illuminate\Support\Carbon; // Tambahkan untuk format tanggal
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Builder;
 
 class EventResource extends Resource
 {
@@ -25,18 +24,31 @@ class EventResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
 
+    protected static ?string $navigationGroup = 'Event Management';
+    public static function getNavigationSort(): ?int
+    {
+        return 2;
+    }
+
     public static function form(Form $form): Form
     {
-        //$user = Filament::auth()->user();
+        $user = Filament::auth()->user();
 
         return $form
             ->schema([
                 //card
                 Fieldset::make('Informasi Acara')
                 ->schema([
-                    BelongsToSelect::make('organizer_id')
-                        ->relationship('organizer', 'organization_name')
-                        ->required(),
+                    // Jika admin, tampilkan dropdown organizer
+                    $user->role === 'admin'
+                        ? Forms\Components\Select::make('organizer_id')
+                            ->label('Organizer')
+                            ->placeholder('Pilih Penyelenggara Event')
+                            ->relationship('organizer', 'organization_name')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                        : Forms\Components\Hidden::make('organizer_id'),
 
                     Forms\Components\Select::make('category_id')
                         ->relationship('category', 'name')
@@ -148,8 +160,8 @@ class EventResource extends Resource
                             ->action(function ($data, $record) {
                                 $record->update(['status' => $data['status']]);
                             })
-                            ->modalHeading('Perbarui Status Event')
-                            ->modalSubmitActionLabel('Simpan')
+                            ->modalHeading('Update Status')
+                            ->modalSubmitActionLabel('Save changes')
                             ->modalWidth('md')
                     )
                 
@@ -212,7 +224,7 @@ class EventResource extends Resource
                                 ),
 
                             Placeholder::make('status')
-                                ->label('Status')
+                                ->label('Status Event')
                                 ->content(fn($record) => ucwords($record->status ?: 'draft')),
 
                             Placeholder::make('description')
@@ -237,11 +249,18 @@ class EventResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
+    // ✅ membatasi tampilan berdasarkan siapa yang login
+    public static function getEloquentQuery(): Builder
     {
-        return [
-            //
-        ];
+        $user = Filament::auth()->user();
+
+        $query = parent::getEloquentQuery();
+
+        if ($user->role === 'organizer') {
+            return $query->where('organizer_id', $user->organizer->id ?? 0);
+        }
+
+        return $query;
     }
 
     public static function getPages(): array
