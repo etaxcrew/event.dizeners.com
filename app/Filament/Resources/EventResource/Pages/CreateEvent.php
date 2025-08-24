@@ -4,6 +4,7 @@ namespace App\Filament\Resources\EventResource\Pages;
 
 use App\Filament\Resources\EventResource;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Facades\Filament; // Tambahkan untuk akses ke Filament
 
 class CreateEvent extends CreateRecord
 {
@@ -17,8 +18,9 @@ class CreateEvent extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        // Misalnya organizer login = relasi dari user
-        $data['organizer_id'] = auth()->user()->organizer->id ?? null;
+        if (Filament::auth()->user()->role !== 'admin') {
+            $data['organizer_id'] = Filament::auth()->user()->organizer->id ?? null;
+        }
 
         return $data;
     }

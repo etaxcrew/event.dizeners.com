@@ -16,8 +16,10 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
             $table->foreignId('ticket_id')->constrained()->onDelete('cascade');
             $table->unsignedInteger('quantity');
-            $table->decimal('price', 10, 2); // harga per tiket saat pembelian
+            $table->unsignedBigInteger('subtotal_price'); // price * quantity at time of purchase
             $table->timestamps();
+
+            $table->unique(['order_id', 'ticket_id']); // satu jenis tiket per order sekali
         });
     }
 

@@ -17,11 +17,23 @@ class Event extends Model
         'description',
         'location',
         'is_online',
-        'event_date',
+        'start_date',
+        'end_date',
+        'open_time',
+        'closed_time',
         'banner_path',
         'video_path',
         'status',
     ];
+
+    protected static function booted()
+    {
+        static::saving(function ($model) {
+            if (empty($model->slug) || $model->isDirty('title')) {
+                $model->slug = Str::slug($model->title);
+            }
+        });
+    }
 
     public function organizer()
     {
@@ -46,22 +58,5 @@ class Event extends Model
     public function orders()
     {
         return $this->hasMany(Order::class);
-    }
-
-    /**
-     * boot
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-
-        // Generate slug before saving
-        static::saving(function ($event) {
-            if (empty($event->slug)) {
-                $event->slug = Str::slug($event->title);
-            }
-        });
     }
 }

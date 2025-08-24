@@ -15,8 +15,10 @@ class Ticket extends Model
         'stock',
         'remaining',
         'price',
-        'start_sale',
-        'end_sale',
+        'ticket_date',
+        'open_time_at',
+        'closed_time_at',
+        'end_date_sale',
         'max_per_user',
         'is_active',
     ];

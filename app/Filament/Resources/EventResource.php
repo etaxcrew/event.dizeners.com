@@ -8,7 +8,6 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Components\Fieldset; // Tambahkan
 use Filament\Resources\Resource;
-use Filament\Facades\Filament; // Tambahkan untuk akses ke Filament
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Actions\Action; // Tambahkan untuk aksi
@@ -17,6 +16,7 @@ use Filament\Forms\Components\Select; // Tambahkan untuk dropdown
 use Filament\Forms\Components\Placeholder; // Tambahan untuk placeholder
 use Illuminate\Support\Carbon; // Tambahkan untuk format tanggal
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Facades\Filament; // Tambahkan untuk akses ke Filament
 
 class EventResource extends Resource
 {
@@ -48,7 +48,19 @@ class EventResource extends Resource
                             ->searchable()
                             ->preload()
                             ->required()
-                        : Forms\Components\Hidden::make('organizer_id'),
+
+                        : Forms\Components\Hidden::make('organizer_id')
+                        ->default(fn () => Filament::auth()->user()->organizer->id ?? null),
+
+                    // $user->role === 'admin'
+                    //     ? Forms\Components\Select::make('organizer_id')
+                    //         ->label('Organizer')
+                    //         ->placeholder('Pilih Penyelenggara Event')
+                    //         ->relationship('organizer', 'organization_name')
+                    //         ->searchable()
+                    //         ->preload()
+                    //         ->required()
+                    //     : Forms\Components\Hidden::make('organizer_id'),
 
                     Forms\Components\Select::make('category_id')
                         ->relationship('category', 'name')
@@ -69,8 +81,15 @@ class EventResource extends Resource
                         ->label('Apakah Event Online?')
                         ->default(false),
                         
-                    Forms\Components\DateTimePicker::make('event_date')->required()
-                        ->label('Event Date'),
+                    Forms\Components\DatePicker::make('start_date')
+                        ->required(),
+
+                    Forms\Components\DatePicker::make('end_date'),
+
+                    Forms\Components\TimePicker::make('open_time')
+                        ->required(),
+
+                    Forms\Components\TimePicker::make('closed_time'),
 
                     Forms\Components\FileUpload::make('banner_path')
                         ->image()
@@ -78,11 +97,12 @@ class EventResource extends Resource
                         ->directory('events') // akan simpan ke storage/app/public/posters
                         ->placeholder('Upload Poster Event')
                         ->required(),
-
-                    Forms\Components\TextInput::make('video_path')
-                        ->label('Video Path')
-                        ->placeholder('Link Video Event')
-                        ->maxLength(255),
+                    
+                    Forms\Components\TextArea::make('highlight')
+                        ->label('Highlight')
+                        ->placeholder('Sorotan Event')
+                        ->rows(3)
+                        ->required(),
 
                     Forms\Components\Repeater::make('photo')
                         ->relationship('photos')
@@ -94,12 +114,6 @@ class EventResource extends Resource
                         ])
                         ->collapsible()
                         ->minItems(0),
-                    
-                    Forms\Components\TextArea::make('highlight')
-                        ->label('Highlight')
-                        ->placeholder('Sorotan Event')
-                        ->rows(3)
-                        ->required(),
                 ]),
 
                 Fieldset::make('Deskripsi')
@@ -120,13 +134,21 @@ class EventResource extends Resource
                 Tables\Columns\TextColumn::make('organizer.organization_name')->label('Name of Organizer')->visible(function () {
                     return Filament::auth()->user()->role === 'admin';
                 }),
+
                 Tables\Columns\TextColumn::make('title')
                     ->label('Event Title')
                     ->limit(30)
                     ->tooltip(fn ($record) => $record->title)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('event_date')->dateTime()
-                    ->label('Event Date'),
+
+                Tables\Columns\TextColumn::make('start_date')
+                    ->dateTime('d M Y')
+                    ->label('Start Date'),
+
+                Tables\Columns\TextColumn::make('end_date')
+                    ->dateTime('d M Y')
+                    ->label('End Date'),
+
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->sortable()
@@ -215,17 +237,31 @@ class EventResource extends Resource
                                 ->content($record->highlight ?? '-')
                                 ->columnSpan(2),
 
-                            Placeholder::make('event_date')
-                                ->label('Event Date')
+                            Placeholder::make('start_date')
+                                ->label('Start Date')
                                 ->content(fn($record) =>
-                                    $record->event_date
-                                        ? Carbon::parse($record->event_date)->format('d M Y H:i:s')
+                                    $record->start_date
+                                        ? Carbon::parse($record->start_date)->format('d M Y')
                                         : '-'
                                 ),
 
-                            Placeholder::make('status')
-                                ->label('Status Event')
-                                ->content(fn($record) => ucwords($record->status ?: 'draft')),
+                            Placeholder::make('end_date')
+                                ->label('End Date')
+                                ->content(fn($record) =>
+                                    $record->end_date
+                                        ? Carbon::parse($record->end_date)->format('d M Y')
+                                        : '-'
+                                ),
+
+                            Placeholder::make('open_time')
+                                ->content($record->open_time),
+
+                            Placeholder::make('closed_time')
+                                ->content($record->closed_time),
+
+                            // Placeholder::make('status')
+                            //     ->label('Status Event')
+                            //     ->content(fn($record) => ucwords($record->status ?: 'draft')),
 
                             Placeholder::make('description')
                                 ->label('Deskripsi')

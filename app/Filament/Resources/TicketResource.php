@@ -7,12 +7,12 @@ use App\Models\Ticket;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Facades\Filament; // Tambahkan untuk akses ke Filament
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Group; // Tambahan untuk mengelompokkan komponen
 use Filament\Forms\Components\Placeholder; // Tambahan untuk placeholder
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Facades\Filament; // Tambahkan untuk akses ke Filament
 
 class TicketResource extends Resource
 {
@@ -36,7 +36,7 @@ class TicketResource extends Resource
                 Forms\Components\Card::make()
                 ->schema([
                     Forms\Components\Select::make('event_id')
-                        ->label('Event')
+                        ->label('Event Title')
                         ->relationship('event', 'title', function ($query) {
                             $user = Filament::auth()->user();
                             if ($user->role === 'organizer') {
@@ -50,6 +50,9 @@ class TicketResource extends Resource
                         ->label('Ticket Name')
                         ->placeholder('Nama Ticket')
                         ->required(),
+                        
+                    Forms\Components\DatePicker::make('ticket_date')
+                        ->label('Ticket Date'),
 
                     Forms\Components\Textarea::make('about')
                         ->label('Description')
@@ -73,12 +76,16 @@ class TicketResource extends Resource
                         ->numeric()
                         ->default(1)
                         ->required(),
-                    
-                    Forms\Components\DateTimePicker::make('start_sale')->required()
-                        ->label('Penjualan Dimulai'),
 
-                    Forms\Components\DateTimePicker::make('end_sale')->required()
-                        ->label('Penjualan Berakhir'),
+                    Forms\Components\TimePicker::make('open_time_at')
+                        ->label('Jam Mulai (Open)'),
+
+                    Forms\Components\TimePicker::make('closed_time_at')
+                        ->label('Jam Tutup'),
+
+                    Forms\Components\DateTimePicker::make('end_date_sale')
+                        ->label('Penjualan Berakhir')
+                        ->required(),
 
                     Forms\Components\Toggle::make('is_active')
                         ->label('Active')
@@ -113,15 +120,15 @@ class TicketResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Ticket Name')
                     ->searchable(),
+
+                Tables\Columns\TextColumn::make('ticket_date')
+                    ->dateTime('d M Y')
+                    ->label('Ticket Date'),
                     
                 Tables\Columns\TextColumn::make('price')
                     ->formatStateUsing(function ($state) {
                         return $state == 0 ? 'Gratis' : 'Rp ' . number_format($state, 0, ',', '.');
                     }),
-                // Tables\Columns\TextColumn::make('price')
-                //     ->money('IDR', locale: 'id')
-                //     ->label('Price')
-                //     ->sortable(),
 
                 Tables\Columns\TextColumn::make('stock'),
                 Tables\Columns\TextColumn::make('is_active')
@@ -141,7 +148,8 @@ class TicketResource extends Resource
                         Group::make([
                             Placeholder::make('event.title')
                                 ->label('Event Title')
-                                ->content($record->event->title ?? '-'),
+                                ->content($record->event->title ?? '-')
+                                ->columnSpan(2),
 
                             Placeholder::make('name')
                                 ->label('Ticket Name')
@@ -150,7 +158,19 @@ class TicketResource extends Resource
                             Placeholder::make('about')
                                 ->label('Description')
                                 ->content($record->about)
-                                ->columnSpan(2),
+                                ->columnSpan(3),
+
+                            Placeholder::make('ticket_date')
+                                ->label('Ticket Date')
+                                ->content($record->ticket_date),
+
+                            Placeholder::make('open_time_at')
+                                ->label('Jam Mulai (Open)')
+                                ->content($record->open_time_at),
+
+                            Placeholder::make('closed_time_at')
+                                ->label('Jam Tutup (Closed)')
+                                ->content($record->closed_time_at),
 
                             Placeholder::make('price')
                                 ->label('Price (Rp)')
@@ -160,27 +180,25 @@ class TicketResource extends Resource
                                 ->label('Stock')
                                 ->content($record->stock),
 
-                            Placeholder::make('start_sale')
-                                ->label('Penjualan Dimulai')
-                                ->content($record->start_sale 
-                                    ? \Carbon\Carbon::parse($record->start_sale)->format('d M Y H:i') 
-                                    : '-'),
-
-                            Placeholder::make('end_sale')
-                                ->label('Penjualan Berakhir')
-                                ->content($record->end_sale
-                                    ? \Carbon\Carbon::parse($record->end_sale)->format('d M Y H:i') 
-                                    : '-'),
+                            Placeholder::make('remaining')
+                                ->label('Sisa Tiket')
+                                ->content($record->remaining),
 
                             Placeholder::make('max_per_user')
                                 ->label('Ticket per User')
                                 ->content($record->max_per_user),
 
+                            Placeholder::make('end_date_sale')
+                                ->label('Penjualan Berakhir')
+                                ->content($record->end_date_sale
+                                    ? \Carbon\Carbon::parse($record->end_date_sale)->format('d M Y H:i') 
+                                    : '-'),
+
                             Placeholder::make('is_active')
                                 ->label('Active')
                                 ->content($record->is_active ? 'Yes' : 'No'),
                                 
-                        ])->columns(2), // ✅ kolom didefinisikan di dalam Group
+                        ])->columns(3), // ✅ kolom didefinisikan di dalam Group
 
                     ]),
 
@@ -190,13 +208,13 @@ class TicketResource extends Resource
                     ->tooltip('Edit'),
 
             ])
-            ->defaultSort('id', 'desc')
-            ->query(
-                Ticket::query()
-                    ->when(Filament::auth()->user()->role === 'organizer', function ($query) {
-                        $query->where('organizer_id', Filament::auth()->user()->organizer->id ?? null);
-                    })
-            )
+            ->defaultSort('id', 'asc')
+            // ->query(
+            //     Ticket::query()
+            //         ->when(Filament::auth()->user()->role === 'organizer', function ($query) {
+            //             $query->where('organizer_id', Filament::auth()->user()->organizer->id ?? null);
+            //         })
+            // )
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -204,8 +222,9 @@ class TicketResource extends Resource
             ]);
     }
 
-    
-    // ✅ membatasi tampilan berdasarkan siapa yang login
+    /**
+     * Filter agar organizer hanya melihat tiket miliknya.
+     */
     public static function getEloquentQuery(): Builder
     {
         $user = Filament::auth()->user();

@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrganizerResource\Pages;
-use App\Filament\Resources\OrganizerResource\RelationManagers;
 use App\Models\Organizer;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 
 class OrganizerResource extends Resource
@@ -23,7 +20,7 @@ class OrganizerResource extends Resource
     protected static ?string $navigationGroup = 'User Management';
     public static function getNavigationSort(): ?int
     {
-        return 8;
+        return 7;
     }
     
     // Batasi akses

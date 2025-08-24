@@ -17,9 +17,11 @@ return new class extends Migration
             $table->string('name');
             $table->text('about')->nullable();
             $table->unsignedInteger('stock');
-            $table->decimal('price', 10, 2)->nullable(); // null = free
-            $table->dateTime('start_sale');
-            $table->dateTime('end_sale');
+            $table->decimal('price', 10, 2)->default(0);
+            $table->date('ticket_date')->nullable();
+            $table->time('open_time_at')->nullable();
+            $table->time('closed_time_at')->nullable();
+            $table->timestamp('end_date_sale')->nullable();
             $table->integer('max_per_user')->default(1);
             $table->boolean('is_active')->default(true);
             $table->timestamps();

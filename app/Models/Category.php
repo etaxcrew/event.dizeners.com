@@ -7,7 +7,6 @@ use Illuminate\Support\Str;
 
 class Category extends Model
 {
-    //
     protected $fillable = ['image', 'name', 'slug', 'description'];
 
     public function events()

@@ -21,10 +21,10 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('location')->nullable();
             $table->boolean('is_online')->default(false);
-            $table->dateTime('event_date');
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
             $table->string('banner_path')->nullable();
             $table->string('video_path')->nullable();
-            //$table->boolean('is_published')->default(false);
             $table->enum('status', ['draft', 'published', 'cancelled'])->default('draft');
             $table->timestamps();
         });

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->foreignId('event_id')->constrained()->onDelete('cascade');
-            $table->decimal('total_amount', 10, 2);
+            $table->decimal('total_price', 10, 2);
             $table->enum('status', ['pending', 'paid', 'cancelled'])->default('pending');
             $table->string('payment_method')->nullable();
             $table->timestamp('paid_at')->nullable();
