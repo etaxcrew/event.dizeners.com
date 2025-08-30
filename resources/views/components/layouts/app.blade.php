@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="https://raw.githubusercontent.com/SantriKoding-com/assets-food-store/refs/heads/main/images/logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+
     <!-- SEO -->
     <meta name="description" content="@yield('description')">
     <meta name="keywords" content="@yield('keywords')">
@@ -19,6 +20,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:image" content="{{ asset('images/og-image.jpg') }}"> --}}
+
     <!-- Title -->
     <title>@yield('title')</title>
     <!-- Libs CSS -->
@@ -28,10 +30,12 @@
     <link rel="stylesheet" href="{{ asset('css/vendors/carouselTicker.css') }}">
     <link rel="stylesheet" href="{{ asset('css/vendors/odometer.css') }}">
     <link rel="stylesheet" href="{{ asset('css/vendors/magnific-popup.css') }}">
+
     {{-- Google Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Roboto:wght@400;500;700&display=swap" />
+
     {{-- Vendor & Icon Fonts (non-Vite) --}}
     <link rel="stylesheet" href="{{ asset('fonts/bootstrap-icons/bootstrap-icons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('fonts/boxicons/boxicons.min.css') }}">
@@ -39,8 +43,8 @@
     <link rel="stylesheet" href="{{ asset('fonts/fontawesome/fontawesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('fonts/fontawesome/solid.min.css') }}">
     <link rel="stylesheet" href="{{ asset('fonts/fontawesome/regular.min.css') }}">
+
     <style>
-        /* Default sembunyikan */
         .ticket-bar {
             display: none;
         }
@@ -55,7 +59,7 @@
                 width: 100%;
                 z-index: 9999;
                 /* background-color: #f3f3f3; */
-                background-color: #f8f9fa; /* bg-light */
+                background-color: #f8f9fa;
                 padding: 10px 15px 8px;
                 box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
                 justify-content: space-between;
@@ -71,18 +75,12 @@
 </head>
 <body class="charity">
     <!--Preloader-->
-
     <x-header.navbar />
 
-    <!-- render content -->
+    <!-- Render content -->
     {{ $slot }}
-    <!-- end render content -->
 
-    <x-footer.19 />
-
-    <!-- bottom menu -->
-    {{-- <x-menus.bottom /> --}}
-    <!-- end bottom menu -->
+    <x-footer.footer />
 
     <!-- Scroll top -->
     <div class="btn-scroll-top">
@@ -110,6 +108,23 @@
     <script src="{{ asset('js/vendors/Splitetext.js') }}"></script>
     <script src="{{ asset('js/vendors/imagesloaded.pkgd.min.js') }}"></script>
     <script src="{{ asset('js/vendors/isotope.pkgd.min.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    window.addEventListener('toast', (e) => {
+        const d = e.detail || {};
+        Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: d.icon || 'info',
+        title: d.message || '',
+        showConfirmButton: false,
+        timer: 2200,
+        timerProgressBar: true,
+        });
+    });
+    </script>
+
     <script src="//unpkg.com/alpinejs" defer></script>
     @livewireScripts
     @vite([

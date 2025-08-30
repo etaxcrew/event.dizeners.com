@@ -39,7 +39,7 @@ Cari tiket event seru di Gorontalo
             </div>
         </section>
 
-        <section class="charity-donation-details-section-1 pt-40 pb-100 overflow-hidden">
+        <section class="charity-donation-details-section-2 pt-40 pb-80 overflow-hidden">
             <div class="container py-4">
                 {{-- Header --}}
                 <div class="bg-white p-4 rounded shadow-sm mb-5">
@@ -62,12 +62,35 @@ Cari tiket event seru di Gorontalo
                                 <div class="card-body d-flex justify-content-between">
                                     <div>
                                         <p class="fs-18 fw-semibold text-dark">{{ $ticket->name }}</p>
-                                        <div class="text-muted mb-1">
+                                        <div class="text-muted mb-3">
                                             <i class="bi bi-clock"></i>
                                             {{ \Carbon\Carbon::parse($ticket->start_date)->format('d F Y') }} WIB
                                         </div>
-                                        {{-- <div class="fw-medium">{{ $ticket->about }}</div> --}}
-                                        <a href="#" class="small text-decoration-none text-primary">Lihat Detail Paket</a>
+                                        <a class="fw-medium text-decoration-none text-primary" data-bs-toggle="modal" href="#infoModal">
+                                            Lihat Detail Paket <i class="bi bi-chevron-right"></i>
+                                        </a>
+                                        <!-- Modal Info Pembelian -->
+                                        <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h6 class="modal-title" id="infoModalLabel">Detail Paket</h6>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        {{-- <ul>
+                                                            <li>Setiap pembelian tiket bersifat final dan tidak dapat dibatalkan atau dikembalikan.</li>
+                                                            <li>Tiket yang sudah dibeli tidak dapat dipindahtangankan kepada orang lain.</li>
+                                                            <li>Harap membawa identitas diri yang valid saat menghadiri acara.</li>
+                                                            <li>Tiket hanya berlaku untuk tanggal dan waktu yang tertera pada tiket.</li>
+                                                            <li>Harap tiba tepat waktu sesuai dengan jadwal acara.</li>
+                                                        </ul> --}}
+                                                        <p class="fw-medium">{{ $ticket->about }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <div class="text-end">
                                         <div class="fw-semibold">
@@ -80,11 +103,14 @@ Cari tiket event seru di Gorontalo
                                         @if(isset($cart[$ticket->id]))
                                             <div class="d-flex align-items-center mt-2">
                                                 <div class="input-group input-group-sm">
-                                                    <button class="btn btn-outline-danger btn-sm me-1" wire:click="removeFromCart({{ $ticket->id }})">
+                                                    <button class="btn btn-outline-danger btn-sm me-1 d-lg-none" wire:click="removeFromCart({{ $ticket->id }})">
                                                         <i class="bi bi-trash"></i>
                                                     </button>
-                                                    <input type="text" min="1" max="{{ $ticket->max_per_user }}" class="form-control form-control-sm text-center" 
-                                                        style="width: 60px;" wire:model="cart.{{ $ticket->id }}.quantity" readonly />
+                                                    <button class="btn btn-outline-secondary btn-sm" wire:click="decrementQuantity({{ $ticket->id }})">-</button>
+                                                    <span class="mx-3">{{ $cart[$ticket->id]['quantity'] }}</span>
+                                                    {{-- <input type="text" min="1" max="{{ $ticket->max_per_user }}" class="form-control form-control-sm text-center"
+                                                        style="width: 60px;" wire:model="cart.{{ $ticket->id }}.quantity" readonly /> --}}
+                                                    <button class="btn btn-outline-secondary btn-sm" wire:click="incrementQuantity({{ $ticket->id }})">+</button>
                                                 </div>
                                             </div>
                                             <small class="text-muted">Max {{ $ticket->max_per_user }} tix/user</small>
@@ -103,10 +129,10 @@ Cari tiket event seru di Gorontalo
                     </div>
 
                     {{-- Ringkasan Pesanan --}}
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 d-none d-lg-block">
                         <div class="card border shadow-sm">
                             <div class="card-body">
-                                <h6 class="fw-semibold mb-3">Pesanan Anda</h6>
+                                <p class="fs-22 fw-semibold text-dark mb-3">Detail Pemesanan</p>
 
                                 @if(count($cart) > 0)
                                     @foreach($cart as $id => $item)
@@ -151,6 +177,91 @@ Cari tiket event seru di Gorontalo
                 </div>
 
             </div>
+
+            <!-- Fixed bottom bar hanya mobile/tablet -->
+            <div class="ticket-bar d-lg-none">
+                <div class="d-flex flex-column">
+                    {{-- <a class="fs-12 fw-medium text-decoration-none text-primary mb-2" data-bs-toggle="modal" href="#viewCartModal">
+                        Lihat Pesanan
+                    </a> --}}
+                    <p class="fs-12 text-dark mb-0">
+                        @if($totalQuantity > 0) Total ({{ $totalQuantity }} tiket) @else Total (0 tiket) @endif
+                    </p>
+                    @if($totalQuantity > 0)
+                    <p class="fs-18 fw-semibold text-dark mb-0">
+                        Rp {{ number_format($totalPrice, 0, ',', '.') }}
+                    </p>
+                    @else
+                    -
+                    @endif
+                </div>
+                <button class="btn btn-primary text-dark" wire:click="goToCheckout" {{ $totalQuantity == 0 ? 'disabled' : '' }}>
+                    Bayar Tiket
+                </button>
+            </div>
+
+            <!-- Modal View Cart (Mobile) -->
+            <div class="modal fade" id="viewCartModal" tabindex="-1" aria-labelledby="viewCartModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="viewCartModalLabel">Detail Pemesanan</h6>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            @if(count($cart) > 0)
+                                @foreach($cart as $id => $item)
+                                    <div class="d-flex justify-content-between align-items-center mb-2 border-bottom pb-2">
+                                        <div>
+                                            <div class="fw-bold">{{ $item['name'] }}</div>
+                                            {{-- <small class="text-muted">{{ $item['date'] }}</small><br /> --}}
+                                            <span class="text-primary">Rp {{ number_format($item['price'], 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="input-group input-group-sm">
+                                                <button class="btn btn-outline-danger btn-sm me-1" wire:click="removeFromCart({{ $id }})">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                                <button class="btn btn-outline-secondary btn-sm" wire:click="decrementQuantity({{ $id }})">-</button>
+                                                <span class="mx-2">{{ $item['quantity'] }}</span>
+                                                <button class="btn btn-outline-secondary btn-sm" wire:click="incrementQuantity({{ $id }})">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+
+                                <div class="d-flex justify-content-between fw-bold mt-3">
+                                    <span>Total ({{ $totalQuantity }} tiket)</span>
+                                    <span class="text-primary">Rp {{ number_format($totalPrice, 0, ',', '.') }}</span>
+                                </div>
+
+                            @else
+                                <p class="text-muted">Tiket yang dipilih akan ditampilkan disini</p>
+                                <hr>
+                                <div class="d-flex justify-content-between">
+                                    <span>Total (0 tiket)</span>
+                                    <span>-</span>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
         </section>
+        {{-- SweetAlert2 Toast --}}
+        <script>
+            window.addEventListener('ticket-limit-exceeded', event => {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'warning',
+                    title: event.detail.message,
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            });
+        </script>
 
     </main>

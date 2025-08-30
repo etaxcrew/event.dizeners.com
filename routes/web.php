@@ -7,6 +7,7 @@ use App\Livewire\Homepage;
 use App\Livewire\EventDetail;
 use App\Livewire\SelectTicket;
 use App\Livewire\CheckoutPage;
+use App\Livewire\CheckoutSuccess;
 
 
 /*
@@ -17,6 +18,9 @@ use App\Livewire\CheckoutPage;
 
 // Beranda (Livewire)
 Route::get('/', Homepage::class)->name('home');
+
+// Daftar semua event
+Route::get('/events', Event::class)->name('events.index');
 
 // Event berdasarkan slug
 Route::get('/event/{slug}', EventDetail::class)->name('event.detail');

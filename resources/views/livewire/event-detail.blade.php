@@ -138,14 +138,14 @@ Cari tiket event seru di Gorontalo
                             <i class="bi bi-geo-alt-fill text-danger me-1"></i> {{ $event->location }}
                         </p>
                         <p class="wow img-custom-anim-top">{{ $event->highlight }}</p>
-                        <h5 class="mb-3 mt-3 text-anime-style-3">Deskripsi</h6>
-                        <p class="wow img-custom-anim-top">{{ $event->description }}</p>
+                        <h5 class="mb-3 mt-5 text-anime-style-3">Deskripsi</h6>
+                        <p class="wow img-custom-anim-top">{!! $event->description !!}</p>
                     </div>
                 </div>
             </div>
 
             <!-- Fixed bottom bar hanya mobile/tablet -->
-            <div class="ticket-bar bg-light">
+            <div class="ticket-bar d-lg-none">
                 <p class="fs-18 text-dark mb-0">
                     @php
                     $minPrice = $event->tickets->min('price');
