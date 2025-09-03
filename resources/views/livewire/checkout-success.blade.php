@@ -15,7 +15,6 @@ Cari tiket event seru di Gorontalo
 @stop --}}
 
     <main>
-
         <div class="container py-5">
             <div class="text-center mb-5">
                 <div class="display-4 text-success"><i class="bi bi-check-circle-fill"></i></div>

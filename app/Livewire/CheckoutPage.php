@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Ticket;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderSuccessMail;
@@ -71,7 +72,7 @@ class CheckoutPage extends Component
             $order = Order::create([
                 'event_id'    => $this->event->id,
                 'customer_id' => $customer->id,
-                // 'order_code' => strtoupper(Str::random(8)),
+                'order_code' => strtoupper(Str::random(8)),
                 'total_price' => $total,
                 'status'      => 'pending',
             ]);
@@ -81,11 +82,11 @@ class CheckoutPage extends Component
                 $ticket = Ticket::where('event_id', $this->event->id)->findOrFail($ticketId);
 
                 OrderItem::create([
-                    'order_id'       => $order->id,
-                    'ticket_id'      => $ticket->id,
-                    'quantity'       => (int) $item['quantity'],
-                    // 'price' => $item['price'],
-                    'subtotal_price' => ((int) $item['price']) * ((int) $item['quantity']),
+                    'order_id'      => $order->id,
+                    'ticket_id'     => $ticket->id,
+                    'quantity'      => (int) $item['quantity'],
+                    'price'         => $item['price'],
+                    'subtotal_price'=> ((int) $item['price']) * ((int) $item['quantity']),
                 ]);
 
                 $ticket->decrement('stock', (int) $item['quantity']);
@@ -98,7 +99,7 @@ class CheckoutPage extends Component
 
             // ✅ kirim email notifikasi ke customer
             Mail::to($customer->email)->send(new OrderSuccessMail($order));
-            
+
             // Redirect ke success + bawa orderId
             return redirect()->route('checkout.success', ['orderId' => $order->id]);
 

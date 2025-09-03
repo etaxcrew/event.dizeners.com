@@ -40,14 +40,9 @@
         <nav class="navbar navbar-expand-lg @@classList navbar-page-9 z-3 p-0">
             <div class="container-fluid px-0 border-bottom">
                 <a class="navbar-brand border-end py-4 pe-9 ps-4" href="/">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
-                        <g>
-                            <path class="fill-primary" d="M24.5043 9.79724L22.7082 18.3981L35.2929 17.1948L37.1117 7.00605L24.5043 9.79724Z" />
-                            <path class="fill-primary" d="M31.9171 17.6837L23.2697 20.6189L30.6333 30.3865L40.723 26.6545L31.9171 17.6837Z" />
-                            <path class="fill-primary" d="M28.4204 27.86L21.4605 22.2312L16.332 33.3249L24.7296 39.7347L28.4204 27.86Z" />
-                            <path class="fill-primary" d="M17.5913 29.998L19.1912 21.3633L6.63465 22.8288L5.04812 33.0511L17.5913 29.998Z" />
-                            <path class="fill-primary" d="M10.2917 22.1777L18.8717 19.0632L11.2859 9.45346L1.28177 13.3945L10.2917 22.1777Z" />
-                            <path class="fill-primary" d="M13.7243 12.2243L20.8121 17.7054L25.6875 6.50938L17.1442 0.277556L13.7243 12.2243Z" />
+                    <svg class="fill-primary" xmlns="http://www.w3.org/2000/svg" width="35" height="40" viewBox="0 0 35 40" fill="none">
+                        <g clip-path="url(#clip0_349_1513)">
+                            <path d="M3.3335 31.9045V11.9335L17.4985 3.8395L31.667 11.9335V28.065L17.4985 36.1605L10 31.875V15.802L17.4985 11.517L25 15.802V24.196L17.4985 28.4815L16.667 28.0065V19.6715L20.858 17.2755L17.4985 15.3565L13.3335 17.738V29.94L17.4985 32.321L28.3335 26.1295V13.8685L17.4985 7.679L6.667 13.8685V33.8085L17.4985 40L35 30V10L17.4985 0L0 10V30L3.3335 31.9045Z" fill="#794AFF" />
                         </g>
                     </svg>
                     <h5 class="mb-0 text-dark">Dizeners</h5>
@@ -58,17 +53,17 @@
                             <a class="nav-link text-uppercase" href="/">Beranda</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-uppercase" href="about.html">Tentang</a>
+                            <a class="nav-link text-uppercase" href="/about">Tentang Kami</a>
                         </li>
                         <li class="nav-item dropdown menu-item-has-children">
-                            <a class="nav-link text-uppercase" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Event </a>
+                            <a class="nav-link text-uppercase" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Event</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item text-capitalize" href="schedule.html">Kategori</a></li>
-                                <li><a class="dropdown-item text-capitalize" href="event-details.html">Pesanan</a></li>
+                                <li><a class="dropdown-item text-capitalize" href="/events">Semua Event</a></li>
+                                <li><a class="dropdown-item text-capitalize" href="/checkout">Pesanan Saya</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-uppercase" href="contact.html">Kontak</a>
+                            <a class="nav-link text-uppercase" href="/kontak">Kontak</a>
                         </li>
                     </ul>
                 </div>
@@ -123,20 +118,20 @@
             </div>
             <div class="offCanvas__side-info mb-30">
                 <div class="contact-list mb-30">
-                    <h4>Office Address</h4>
+                    <h4>Alamat Kantor</h4>
                     <p>
                         Jalan Trans Sulawesi, Pentadu, Kecamatan Paguat, Pohuwato <br /> Provinsi Gorontalo
                     </p>
                 </div>
                 <div class="contact-list mb-30">
-                    <h4>Phone Number</h4>
+                    <h4>Nomor Telepon</h4>
                     <p>+0989 7876 9865 9</p>
                     <p>+(090) 8765 86543 85</p>
                 </div>
                 <div class="contact-list mb-30">
-                    <h4>Email Address</h4>
-                    <p>hello@dizeners.com</p>
-                    <p>support@dizeners.com</p>
+                    <h4>Alamat Email</h4>
+                    <p>admin@dizeners.com</p>
+                    <p>event@dizeners.com</p>
                 </div>
             </div>
             <div class="offCanvas__social-icon mt-30">
@@ -156,7 +151,8 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-8 mx-auto">
-                            <h3 class="mb-4">Anda cari apa?</h3>
+                            <h3 class="mb-4">Cari Event Favoritmu</h3>
+                            {{-- Search Form --}}
                             <form class="input-group mb-3" data-aos="zoom-in">
                                 <input type="text" class="form-control" placeholder="Enter Your Keywords" aria-label="Enter Your Keywords" aria-describedby="button-addon2" />
                                 <button class="btn btn-primary rounded-end-2" type="submit" aria-label="search" id="button-addon2">
@@ -195,27 +191,20 @@
                             <nav>
                                 <ul class="mobile-menu ps-0">
                                     <li>
-                                        <a href="index.html">Homepages</a>
+                                        <a href="/">Beranda</a>
                                     </li>
                                     <li>
-                                        <a href="about.html">About us</a>
+                                        <a href="/about">Tentang Kami</a>
                                     </li>
                                     <li class="has-children">
-                                        <a href="#">Schedule</a>
+                                        <a href="#">Event</a>
                                         <ul class="sub-menu">
-                                            <li><a href="schedule.html">Schedule</a></li>
-                                            <li><a href="event-details.html">Event Details</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="has-children">
-                                        <a href="#">Pages</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="speakers.html">Speakers</a></li>
-                                            <li><a href="ticket.html">Buy tickets</a></li>
+                                            <li><a href="/events">Semua Event</a></li>
+                                            <li><a href="/checkout">Pesanan Saya</a></li>
                                         </ul>
                                     </li>
                                     <li>
-                                        <a href="contact.html">Contact</a>
+                                        <a href="/kontak">Kontak</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -225,7 +214,7 @@
                 <div class="tgmobile__menu-bottom mt-auto">
                     <div class="contact-info">
                         <ul class="list-wrap">
-                            <li><span class="opacity-50">Mail:</span> <a href="mailto:info@valom.com">info@dizeners.com</a></li>
+                            <li><span class="opacity-50">Mail:</span> <a href="mailto:info@valom.com">event@dizeners.com</a></li>
                             <li><span class="opacity-50">Phone:</span> <a href="tel:0123456789">+123 888 9999</a></li>
                         </ul>
                     </div>

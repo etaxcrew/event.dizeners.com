@@ -108,14 +108,13 @@ Cari tiket event seru di Gorontalo
                                         @endphp
                                         {{ $minPrice == 0 ? 'Event Gratis' : 'Mulai dari Rp ' . number_format($minPrice, 0, ',', '.') }}
                                     </h6>
-                                    <a href="{{ route('select.ticket', $event->slug) }}" class="btn btn-primary hover-up">
+                                    @if ($ticket->remaining > 0)
+                                    <a href="{{ route('select.ticket', $event->slug) }}" class="btn btn-primary">
                                         <span class="text-dark">Daftar Tiket</span>
-                                        {{-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                            <g clip-path="url(#clip0_1136_654)">
-                                                <path d="M15.8167 7.55759C15.8165 7.5574 15.8163 7.55719 15.8161 7.557L12.5504 4.307C12.3057 4.06353 11.91 4.06444 11.6665 4.30912C11.423 4.55378 11.4239 4.9495 11.6686 5.193L13.8612 7.375H0.625C0.279813 7.375 0 7.65481 0 8C0 8.34519 0.279813 8.625 0.625 8.625H13.8612L11.6686 10.807C11.4239 11.0505 11.423 11.4462 11.6665 11.6909C11.91 11.9356 12.3058 11.9364 12.5504 11.693L15.8162 8.443C15.8163 8.44281 15.8165 8.44259 15.8167 8.4424C16.0615 8.19809 16.0607 7.80109 15.8167 7.55759Z" fill="#ECAB23" />
-                                            </g>
-                                        </svg> --}}
                                     </a>
+                                    @else
+                                    <button class="btn btn-secondary" disabled>Tiket Habis</button>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -145,17 +144,40 @@ Cari tiket event seru di Gorontalo
             </div>
 
             <!-- Fixed bottom bar hanya mobile/tablet -->
-            <div class="ticket-bar d-lg-none">
+            <div class="ticket-bar d-lg-none fixed-bottom bg-light p-3 d-flex justify-content-between align-items-center shadow">
                 <p class="fs-18 text-dark mb-0">
                     @php
                     $minPrice = $event->tickets->min('price');
                     @endphp
                     {{ $minPrice == 0 ? 'Event Gratis' : 'Mulai dari Rp ' . number_format($minPrice, 0, ',', '.') }}
                 </p>
-                <a href="{{ route('select.ticket', $event->slug) }}" class="btn btn-primary hover-up">
+                @if ($ticket->remaining > 0)
+                <a href="{{ route('select.ticket', $event->slug) }}" class="btn btn-primary">
                     <span class="text-dark">Daftar Tiket</span>
                 </a>
+                @else
+                <button class="btn btn-secondary" disabled>Tiket Habis</button>
+                @endif
             </div>
-
         </section>
+
+        {{-- Sembunyikan ticket bar saat scroll ke footer --}}
+        <script>
+            document.addEventListener('scroll', function () {
+                const footer = document.querySelector('footer');
+                const ticketBar = document.querySelector('.ticket-bar');
+
+                if (footer && ticketBar) {
+                    const footerTop = footer.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+
+                    if (footerTop < windowHeight) {
+                        ticketBar.classList.add('hide');
+                    } else {
+                        ticketBar.classList.remove('hide');
+                    }
+                }
+            });
+        </script>
+
     </main>

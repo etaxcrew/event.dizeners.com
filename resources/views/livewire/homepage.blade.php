@@ -91,30 +91,32 @@ Cari tiket event seru di Gorontalo
                                 </div>
                                 <div class="d-flex flex-wrap justify-content-center gap-5 mt-5">
                                     <div class="d-flex align-items-center gap-md-4 gap-3">
-                                        <p class="fs-18 text-anime-style-3 text-center mb-0">
+                                        {{-- <p class="fs-18 text-anime-style-3 text-center mb-0">
                                             Buat event kamu lebih menonjol lewat website premium, jangkauan luas di search engine, dan keunggulan di pasar online.
-                                        </p>
+                                        </p> --}}
+                                        <p class="fs-18 text-anime-style-3 text-center mb-0">
+                                            Temukan berbagai event menarik di Gorontalo, dari konser musik hingga seminar profesional, semua dalam satu platform.
                                     </div>
-                                    <a href="" class="btn btn-dark">
+                                    {{-- <a href="" class="btn btn-dark">
                                         <span>jelajahi</span>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                                             <g clip-path="url(#clip0_1121_817)">
                                                 <path d="M15.8167 7.55759C15.8165 7.5574 15.8163 7.55719 15.8161 7.557L12.5504 4.307C12.3057 4.06353 11.91 4.06444 11.6665 4.30912C11.423 4.55378 11.4239 4.9495 11.6686 5.193L13.8612 7.375H0.625C0.279813 7.375 0 7.65481 0 8C0 8.34519 0.279813 8.625 0.625 8.625H13.8612L11.6686 10.807C11.4239 11.0505 11.423 11.4462 11.6665 11.6909C11.91 11.9356 12.3058 11.9364 12.5504 11.693L15.8162 8.443C15.8163 8.44281 15.8165 8.44259 15.8167 8.4424C16.0615 8.19809 16.0607 7.80109 15.8167 7.55759Z" fill="#ECAB23" />
                                             </g>
                                         </svg>
-                                    </a>
-                                    {{-- <div class="d-flex align-items-center gap-md-4 gap-3">
+                                    </a> --}}
+                                    <div class="d-flex align-items-center gap-md-4 gap-3">
                                         <h2 class="count mb-0"><span class="odometer text-nowrap" data-count="122"></span>+</h2>
                                         <p class="mb-0">
-                                            Pengguna <br class="d-block" /> Bergabung
+                                            Pengguna Terdaftar <br class="d-block" /> Saat Ini
                                         </p>
                                     </div>
                                     <div class="d-flex align-items-center gap-md-4 gap-3">
                                         <h2 class="count mb-0"><span class="odometer text-nowrap" data-count="14"></span></h2>
                                         <p class="mb-0">
-                                            Komunitas <br class="d-block" /> Event
+                                            Event Telah <br class="d-block" /> Diselenggarakan
                                         </p>
-                                    </div> --}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -185,91 +187,69 @@ Cari tiket event seru di Gorontalo
                 </div> --}}
             </div>
         </section>
-        
+
         <!-- home section 3 -->
         <section class="charity-home-section-3 pt-120 pb-120 position-relative z-0 bg-light overflow-hidden">
             <div class="container position-relative">
                 <div class="row text-center">
                     <div class="number-step d-flex align-items-center justify-content-center gap-3">
                         <i class="fa-regular fa-calendar text-primary"></i>
-                        <span class="btn-text">Kategori Acara yang Tersedia</span>
+                        <span class="btn-text">Event Berdasarkan Kategori</span>
                     </div>
                     <h2 class="text-dark my-3 text-anime-style-3">
                         Temukan Acara Berdasarkan
                         <span class="bg-white border border-dark rounded-5 px-2">Kategori</span>
                 </div>
                 <div class="row mt-80">
-                    <div class="col-lg-3 col-md-6 card-feature mb-lg-0 mb-5" data-aos="fade-up" data-aos-delay="0">
-                        <div class="bg-white rounded-4 p-4 hover-up border border-white">
-                            <div class="mb-6 pb-6">
-                                <img src="{{ asset('images/page-home/icon-1.png') }}" alt="Dizeners" />
+                    @foreach ($categories as $category)
+                        <div class="col-lg-3 col-md-6 card-feature mb-lg-0 mb-5" data-aos="fade-up" data-aos-delay="0">
+                            <div class="bg-white rounded-4 p-4 hover-up border border-white">
+                                <div class="mb-6 pb-6">
+                                    <img src="{{ Storage::url($category->image) }}" alt="{{ $category->name }}" />
+                                </div>
+                                <div class="line mb-3"></div>
+                                <a href="#">
+                                    <h5 class="text-anime-style-2">{{ $category->name }}</h5>
+                                </a>
+                                <p class="fs-7">{{ $category->description }}</p>
                             </div>
-                            <div class="line mb-3"></div>
-                            <a href="#">
-                                <h5 class="text-anime-style-2">Training & Workshop</h5>
-                            </a>
-                            <p class="fs-7">Tingkatkan keterampilan dan wawasanmu melalui pelatihan intensif dan workshop interaktif.</p>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 card-feature mb-lg-0 mb-5" data-aos="fade-up" data-aos-delay="400">
-                        <div class="bg-white rounded-4 p-4 hover-up border border-white">
-                            <div class="mb-6 pb-6">
-                                <img src="{{ asset('images/page-home/icon-2.png') }}" alt="Dizeners" />
-                            </div>
-                            <div class="line mb-3"></div>
-                            <a href="#">
-                                <h5 class="text-anime-style-2">Kontes & Olahraga</h5>
-                            </a>
-                            <p class="fs-7">Berbagai kontes dan event olahraga yang bikin semangat makin membara.</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 card-feature mb-lg-0 mb-5" data-aos="fade-up" data-aos-delay="200">
-                        <div class="bg-white rounded-4 p-4 hover-up border border-white">
-                            <div class="mb-6 pb-6">
-                                <img src="{{ asset('images/page-home/icon-3.png') }}" alt="Dizeners" />
-                            </div>
-                            <div class="line mb-3"></div>
-                            <a href="#">
-                                <h5 class="text-anime-style-2">Hiburan & Festival</h5>
-                            </a>
-                            <p class="fs-7">Nikmati momen tak terlupakan di konser besar, festival tahunan, atau event komunitas yang meriah.</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 card-feature mb-lg-0 mb-5" data-aos="fade-up" data-aos-delay="600">
-                        <div class="bg-white rounded-4 p-4 hover-up border border-white">
-                            <div class="mb-6 pb-6">
-                                <img src="{{ asset('images/page-home/icon-4.png') }}" alt="Dizeners" />
-                            </div>
-                            <div class="line mb-3"></div>
-                            <a href="#">
-                                <h5 class="text-anime-style-2">Seminar & Talkshow</h5>
-                            </a>
-                            <p class="fs-7">Temukan inspirasi, ilmu, dan insight langsung dari para pembicara profesional.</p>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </section>
-        
+
         <!-- home section 4 -->
         <section class="charity-home-section-4 position-relative pt-120 pb-120 overflow-hidden">
             <div class="container position-relative">
                 <div class="row text-center">
                     <div class="number-step d-flex align-items-center justify-content-center gap-3">
                         <i class="fa-regular fa-calendar-days text-primary"></i>
-                        <span class="btn-text">Semua Acara yang Tersedia</span>
-                    </div>
-                    <h2 class="text-dark my-3 text-anime-style-3">
-                        Pilih Jenis Acara yang Sesuai
+                        <span class="btn-text">Event Berdasarkan Minat</span>
+                        {{-- <span class="btn-text">Semua Acara yang Tersedia</span> --}}
+                    </div><h2 class="text-dark my-3 text-anime-style-3">
+                        Event Terkini Sesuai
                         <span class="bg-white border border-dark rounded-5 px-2">Minatmu</span>
                     </h2>
+                    {{-- <h2 class="text-dark my-3 text-anime-style-3">
+                        Pilih Jenis Acara yang Sesuai
+                        <span class="bg-white border border-dark rounded-5 px-2">Minatmu</span>
+                    </h2> --}}
                 </div>
             </div>
 
             <div class="container-fluid wow img-custom-anim-top">
                 <div class="text-center mt-80">
                     <div class="button-group filter-button-group filter-menu-active">
-                        <button class="fs-18 btn btn-md btn-filter mb-5 me-4 {{ $selectedCategory === 'all' ? 'active' : '' }}" wire:click="setCategory('all')">Semua</button>
+                        <button class="fs-18 btn btn-md btn-filter mb-5 me-4 {{ $selectedCategory === 'all' ? 'active' : '' }}" wire:click="setCategory('all')">Semua Kategori</button>
+                        
+                        {{-- <button class="fs-18 btn btn-md btn-filter mb-5 me-4 {{ $selectedCategory === 'upcoming' ? 'active' : '' }}" wire:click="setCategory('upcoming')">Event Mendatang</button>
+                        <button class="fs-18 btn btn-md btn-filter mb-5 me-4 {{ $selectedCategory === 'online' ? 'active' : '' }}" wire:click="setCategory('online')">Event Online</button>
+                        <button class="fs-18 btn btn-md btn-filter mb-5 me-4 {{ $selectedCategory === 'offline' ? 'active' : '' }}" wire:click="setCategory('offline')">Event Offline</button>
+                        <button class="fs-18 btn btn-md btn-filter mb-5 me-4 {{ $selectedCategory === 'free' ? 'active' : '' }}" wire:click="setCategory('free')">Event Gratis</button>
+                        <button class="fs-18 btn btn-md btn-filter mb-5 me-4 {{ $selectedCategory === 'paid' ? 'active' : '' }}" wire:click="setCategory('paid')">Event Berbayar</button>
+                        <button class="fs-18 btn btn-md btn-filter mb-5 me-4 {{ $selectedCategory === 'popular' ? 'active' : '' }}" wire:click="setCategory('popular')">Event Populer</button> --}}
+                       
                         @foreach ($categories as $category)
                             <button class="fs-18 btn btn-md btn-filter mb-5 me-4 {{ $selectedCategory === $category->slug ? 'active' : '' }}" wire:click="setCategory('{{ $category->slug }}')">
                                 {{ $category->name }}
@@ -320,7 +300,7 @@ Cari tiket event seru di Gorontalo
                                                 {{ $event->location ?? '-' }}
                                             @endif
                                         </p>
-                                        
+
                                         {{-- Progress Bar dengan Pengecekan Tiket --}}
                                         @if ($event->tickets->isNotEmpty())
                                             @php

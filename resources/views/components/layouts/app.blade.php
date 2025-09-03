@@ -47,6 +47,10 @@
     <style>
         .ticket-bar {
             display: none;
+            transition: transform 0.3s ease;
+        }
+        .ticket-bar.hide {
+            transform: translateY(100%);
         }
 
         /* Tampilkan hanya di mobile & tablet */

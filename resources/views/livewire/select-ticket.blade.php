@@ -160,7 +160,7 @@ Cari tiket event seru di Gorontalo
                                         <span class="text-primary">Rp {{ number_format($totalPrice, 0, ',', '.') }}</span>
                                     </div>
 
-                                    <button class="btn btn-primary w-100 mt-3 text-dark" wire:click="goToCheckout">Pesan Tiket</button>
+                                    <button class="btn btn-primary w-100 mt-3 text-dark" wire:click="goToCheckout">Bayar Tiket</button>
                                 @else
                                     <p class="text-muted">Tiket yang dipilih akan ditampilkan disini</p>
                                     <hr>
@@ -168,7 +168,7 @@ Cari tiket event seru di Gorontalo
                                         <span>Total (0 tiket)</span>
                                         <span>-</span>
                                     </div>
-                                    <button class="btn btn-secondary w-100 mt-3" disabled>Pesan Tiket</button>
+                                    <button class="btn btn-secondary w-100 mt-3" disabled>Bayar Tiket</button>
                                 @endif
 
                             </div>
@@ -179,7 +179,7 @@ Cari tiket event seru di Gorontalo
             </div>
 
             <!-- Fixed bottom bar hanya mobile/tablet -->
-            <div class="ticket-bar d-lg-none">
+            <div class="ticket-bar d-lg-none bg-light p-3 d-flex justify-content-between align-items-center shadow">
                 <div class="d-flex flex-column">
                     {{-- <a class="fs-12 fw-medium text-decoration-none text-primary mb-2" data-bs-toggle="modal" href="#viewCartModal">
                         Lihat Pesanan

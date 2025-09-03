@@ -11,6 +11,7 @@ class OrderItem extends Model
         'order_id',
         'ticket_id',
         'quantity',
+        'price',
         'subtotal_price',
     ];
 

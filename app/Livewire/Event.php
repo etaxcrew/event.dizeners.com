@@ -16,6 +16,3 @@ class Event extends Component
         ]);
     }
 }
-
-
-
