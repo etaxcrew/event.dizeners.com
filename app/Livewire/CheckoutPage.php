@@ -144,7 +144,7 @@ class CheckoutPage extends Component
 
             if (auth()->guard('customer')->attempt($credentials, $this->remember)) {
                 $customer = auth()->guard('customer')->user();
-                
+
                 // Pre-fill the form with customer data
                 $this->name = $customer->name;
                 $this->email = $customer->email;
@@ -153,7 +153,7 @@ class CheckoutPage extends Component
                 // Reset login form and close modal
                 $this->reset(['loginEmail', 'loginPassword', 'remember']);
                 $this->dispatch('close-modal');
-                
+
                 session()->flash('success', 'Login berhasil!');
             } else {
                 session()->flash('error', 'Email atau password salah.');

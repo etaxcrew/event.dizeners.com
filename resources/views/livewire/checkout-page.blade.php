@@ -105,19 +105,19 @@
                                                 <form wire:submit.prevent="login">
                                                     <div class="mb-3">
                                                         <label for="loginEmail" class="form-label">Email</label>
-                                                        <input type="email" class="form-control" id="loginEmail" 
+                                                        <input type="email" class="form-control" id="loginEmail"
                                                             wire:model.defer="loginEmail" placeholder="email@example.com">
-                                                        @error('loginEmail') 
-                                                            <div class="text-danger small mt-1">{{ $message }}</div> 
+                                                        @error('loginEmail')
+                                                            <div class="text-danger small mt-1">{{ $message }}</div>
                                                         @enderror
                                                     </div>
 
                                                     <div class="mb-3">
                                                         <label for="loginPassword" class="form-label">Password</label>
-                                                        <input type="password" class="form-control" id="loginPassword" 
+                                                        <input type="password" class="form-control" id="loginPassword"
                                                             wire:model.defer="loginPassword" placeholder="Password">
-                                                        @error('loginPassword') 
-                                                            <div class="text-danger small mt-1">{{ $message }}</div> 
+                                                        @error('loginPassword')
+                                                            <div class="text-danger small mt-1">{{ $message }}</div>
                                                         @enderror
                                                     </div>
 
@@ -136,7 +136,7 @@
                                                     </button>
 
                                                     <div class="text-center mt-3">
-                                                        <p class="mb-0">Belum punya akun? 
+                                                        <p class="mb-0">Belum punya akun?
                                                             <a href="{{ route('customer.register') }}" class="text-decoration-none">
                                                                 Daftar sekarang
                                                             </a>
@@ -151,9 +151,9 @@
                                                     </span>
                                                 </div>
 
-                                                <a href="{{ route('customer.login.google') }}" 
+                                                <a href="{{ route('customer.login.google') }}"
                                                     class="btn btn-outline-dark w-100 d-flex align-items-center justify-content-center gap-2">
-                                                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" 
+                                                    <img src="https://www.svgrepo.com/show/475656/google-color.svg"
                                                         class="w-5 h-5" style="width: 20px; height: 20px;" alt="Google">
                                                     Login dengan Google
                                                 </a>
