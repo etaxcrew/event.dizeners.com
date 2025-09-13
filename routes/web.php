@@ -13,14 +13,6 @@ use App\Livewire\CheckoutPage;
 use App\Livewire\CheckoutSuccess;
 
 use App\Http\Controllers\EventController;
-
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
-
 // Beranda (Livewire)
 Route::get('/', Homepage::class)->name('home');
 Route::get('/about', About::class)->name('about');
@@ -47,3 +39,8 @@ Route::get('/checkout/{slug}', CheckoutPage::class)
 // Success
 Route::get('/checkout-success/{orderId}', CheckoutSuccess::class)
     ->name('checkout.success');
+
+// Customer Routes
+Route::middleware('web')
+    ->prefix('customer')
+    ->group(base_path('routes/customer.php'));

@@ -4,25 +4,31 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
-
     <!-- SEO -->
     <meta name="description" content="@yield('description')">
     <meta name="keywords" content="@yield('keywords')">
     <meta name="author" content="Gorontaloweb.com">
     <meta name="robots" content="index, follow">
     <meta name="googlebot" content="index, follow">
+    <!-- Open Graph Tags -->
     <meta content="@yield('title')" property="og:title">
     <meta content="@yield('description')" property="og:description">
-    {{-- <meta content="@yield('image')" property="og:image"> --}}
-    <!-- OG -->
-    {{-- <meta property="og:title" content="@yield('title', 'Platform Event Laravel')">
-    <meta property="og:description" content="@yield('description', 'Platform Event Multi-Tenant Laravel')">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:image" content="{{ asset('images/og-image.jpg') }}"> --}}
+    <meta content="@yield('image')" property="og:image">
+    <meta content="{{ url('/') }}" property="og:url">
+    <meta content="website" property="og:type">
+    <meta property="og:site_name" content="Dizeners.com">
+    <meta property="og:locale" content="id_ID">
+    <!-- Twitter Card (opsional tapi direkomendasikan) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('title')">
+    <meta name="twitter:description" content="@yield('description')">
+    <meta name="twitter:image" content="@yield('image')">
+    <meta name="twitter:site" content="@Dizeners">
+    <meta name="twitter:creator" content="@Dizeners">
 
-    <!-- Title -->
     <title>@yield('title')</title>
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Libs CSS -->
     <link rel="stylesheet" href="{{ asset('css/vendors/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/vendors/swiper-bundle.min.css') }}">
@@ -44,6 +50,7 @@
     <link rel="stylesheet" href="{{ asset('fonts/fontawesome/solid.min.css') }}">
     <link rel="stylesheet" href="{{ asset('fonts/fontawesome/regular.min.css') }}">
 
+    {{-- Custom CSS --}}
     <style>
         .ticket-bar {
             display: none;
@@ -75,9 +82,12 @@
     @vite([
         'resources/css/main.css',
         'resources/css/style.css',
+        'resources/css/charity.css',
     ])
 </head>
-<body class="charity">
+<body class="event">
+{{-- <body class="charity"> --}}
+
     <!--Preloader-->
     <x-header.navbar />
 

@@ -1,10 +1,5 @@
 @charset "UTF-8";
 /*===========
-   Theme Name: AliThemes - Bootstrap Dev Starter
-   Author : alithemes
-   Support: https://alithemes.ticksy.com
-   Version: 1.0
-=======
 Table of contents
     01. Theme Default CSS
     02. Header
@@ -1001,6 +996,73 @@ img {
   font-size: 14px;
   font-weight: 400;
 }
+
+.btn-yellow {
+  --bs-btn-color: var(--tc-system-black);
+  --bs-btn-bg: var(--tc-system-yellow);
+  --bs-btn-border-color: none;
+  --bs-btn-hover-color: var(--tc-system-black);
+  --bs-btn-hover-bg: var(--tc-system-yellow);
+  --bs-btn-hover-border-color: none;
+  --bs-btn-focus-shadow-rgb: 49, 132, 253;
+  --bs-btn-active-color: var(--tc-system-black);
+  --bs-btn-active-bg: var(--tc-system-yellow);
+  --bs-btn-active-border-color: none;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: var(--tc-system-black);
+  --bs-btn-disabled-bg: var(--tc-theme-secondary);
+  --bs-btn-disabled-border-color: none;
+}
+
+/* etaxcrew */
+
+.btn-change-text {
+  --bs-btn-border-radius: 10px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 19px 30px;
+  border: 1px solid var(--bs-btn-border-color);
+  background: var(--bs-btn-bg);
+  color: var(--bs-btn-color);
+  border-radius: var(--bs-btn-border-radius);
+  font-size: 14px;
+  gap: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.btn-change-text span {
+  transition: all 0.35s ease;
+}
+.btn-change-text svg path {
+  transition: 0.15s ease-in-out;
+}
+.btn-change-text:before {
+  content: attr(data-text);
+  color: var(--bs-btn-hover-color);
+  position: absolute;
+  transition: all 0.35s ease;
+  top: -35px;
+}
+.btn-change-text:hover {
+  background: var(--bs-btn-hover-bg);
+  border-color: var(--bs-btn-hover-border-color);
+}
+.btn-change-text:hover span {
+  transform: translateY(300%);
+  transition: all 0.35s ease;
+}
+.btn-change-text:hover svg path {
+  fill: var(--bs-btn-hover-color) !important;
+}
+.btn-change-text:hover:before {
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.35s ease;
+}
+
+
 
 .play-btn {
   font-size: 24px;
